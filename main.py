@@ -149,8 +149,13 @@ def save_xml(aug_info, dst_xml_dir):
 
 
 if __name__ == '__main__':
-    main_change('D:/Proj/chipImg/align/annotations/0001.xml',
-                'D:/Proj/chipImg/align/images',
-                'D:/Proj/chipImg/align2/augued/images',
-                'D:/Proj/chipImg/align2/augued/annotations',
-                10)
+    # 根据路径处理
+    xml_folder = 'D:/Proj/chipImg/align/annotations'
+    for file in os.listdir(xml_folder):
+        xml_name = xml_folder+'/'+file
+        print(xml_name)
+        main_change(xml_name,
+                    'D:/Proj/chipImg/align/images',
+                    'D:/Proj/chipImg/align2/augued/images',
+                    'D:/Proj/chipImg/align2/augued/annotations',
+                    20)

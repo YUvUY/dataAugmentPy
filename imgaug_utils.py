@@ -45,23 +45,31 @@ def get_inner_bbs(image_path, dst_img_dir, array_info, p_numbers):
     # Image augmentation sequence
     # 此增强序列可以自行定义，API可以查询imgaug官方文档
     seq = iaa.Sequential([
-        iaa.Fliplr(0.5),
+        iaa.Fliplr(0.5), # 水平翻转
+        iaa.Flipud(0.5),  # 垂直翻转
+
+        iaa.ChannelShuffle(0.2), # 通道变化
+
         iaa.Crop(percent=(0, 0.1)),
-        iaa.Sometimes(
+
+        iaa.Sometimes( # 0.5的图像做高斯滤波
             0.5,
             iaa.GaussianBlur(sigma=(0, 0.5))
         ),
-        # Strengthen or weaken the contrast in each image.
-        iaa.LinearContrast((0.75, 1.5)),
+
+        # Strengthen or weaken the contrast in each image. 对比度
+        iaa.LinearContrast((0.85, 1.2)),
         iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.05 * 255), per_channel=0.5),
+
         # change illumination
-        iaa.Multiply((0.3, 1.2), per_channel=0.2),
-        # affine transformation
+        iaa.Multiply((0.8, 1.2), per_channel=0.2),
+
+        # affine transformation仿射变化
         iaa.Affine(
-            scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
-            translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},
-            rotate=(-5, 5),
-            shear=(-8, 8)
+            scale={"x": (0.9, 1.5), "y": (0.9, 1.5)}, # 缩放
+            translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)}, # 平移
+            rotate=(-45, 45),   # 旋转
+            shear=(-8, 8)  # 错切
         )
     ], random_order=True)  # apply augmenters in random order
 
